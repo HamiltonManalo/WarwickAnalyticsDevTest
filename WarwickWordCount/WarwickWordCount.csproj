@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>0107d5e1-0170-4592-8fd9-064d6815d202</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ContainerDevelopmentMode>Regular</ContainerDevelopmentMode>
+
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\" />
+  </ItemGroup>
+
+
+</Project>
