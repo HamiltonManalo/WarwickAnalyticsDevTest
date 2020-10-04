@@ -19,13 +19,21 @@ namespace WarwickWordCount
             Configuration = configuration;
         }
 
-        private const string corsPolicy = "corspolicy"; 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson();
+            services.AddCors(/*policy => policy.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins("localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .AllowAnyHeader();
+            })*/);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,11 +47,10 @@ namespace WarwickWordCount
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-           
-      
 
-            app.UseAuthorization();
             app.UseRouting();
+            app.UseCors(builder => builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

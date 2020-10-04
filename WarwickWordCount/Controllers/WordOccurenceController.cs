@@ -10,11 +10,11 @@ namespace WarwickWordCount.Controllers
     [ApiController]
     public class WordOccurenceController : ControllerBase
     {
-        [HttpGet]
-        [DisableCors]
+        [HttpPost]
+        [EnableCors]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(OccurenceRequest request)
+        public async Task<IActionResult> Post([FromBody]OccurenceRequest request)
         {
             if (request == null)
                 return BadRequest(new
@@ -26,9 +26,17 @@ namespace WarwickWordCount.Controllers
                 return Ok(new OccurenceResponse
                 {
                     Count = 0
-                }); 
-            
-            var count = request.Sentence.Split(" ").Count(x => x == request.Word);
+                });
+            int count = 0;
+            if (request.isCaseSensitive)
+            {
+                var word = request.Word.ToLower();
+                count = request.Sentence.ToLower().Split(" ").Count(x => x == word);
+            }
+            else
+            {
+                count = request.Sentence.Split(" ").Count(x => x == request.Word);
+            }
 
             return Ok(new OccurenceResponse
             {
@@ -41,6 +49,7 @@ namespace WarwickWordCount.Controllers
     {
         public string Word { get; set; }
         public string Sentence { get; set; }
+        public bool isCaseSensitive { get; set; }
     }
 
     public class OccurenceResponse
